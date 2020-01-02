@@ -1,18 +1,19 @@
 {
   "name": "evo-test",
   "version": "1.0.0",
-  "description": "Testing out evonet",
+  "description": "Monitor evonet name registrations & make your own",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node listNames.js",
+    "register": "node register.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Joshua Seigler",
   "license": "MIT",
   "dependencies": {
-    "@dashevo/dashcore-lib": "^0.18.0",
-    "@dashevo/dpp": "^0.10.0-dev.14",
-    "dash": "^1.0.1",
-    "nodemon": "^2.0.2"
+    "dash": "^1.1.0",
+    "node-notifier": "^6.0.0",
+    "nodemon": "^2.0.2",
+    "play-sound": "^1.1.3"
   }
 }
