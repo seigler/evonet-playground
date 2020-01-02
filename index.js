@@ -8,22 +8,13 @@ const sdkOpts = {
   network: 'testnet',
   mnemonic: 'your mnemonic here',
 };
-const sdk = new DashJS.SDK(sdkOpts);
-
-const createIdentity = async function () {
-  await sdk.isReady();
-  const platform = sdk.platform;
-  const id = await platform.identities.register('user');
-  console.dir(id);
-};
-//createIdentity();
-
 const id = 'your id here';
 const name = 'yournamehere.dash';
 
 register();
 
 async function register () {
+  const sdk = new DashJS.SDK(sdkOpts);
   await sdk.isReady();
   console.log('Retrieving identity');
   const idBuffer = await sdk.clients.dapi.getIdentity(id);
