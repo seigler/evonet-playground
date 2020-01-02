@@ -1,16 +1,17 @@
 const DashJS = require('dash');
+require('dotenv').load();
 
 const sdkOpts = {
   network: 'testnet',
-  mnemonic: 'a Dash wallet mnemonic with evonet funds goes here',
+  mnemonic: provess.env.MNEMONIC,
 };
 const sdk = new DashJS.SDK(sdkOpts);
 
 const registerName = async function () {
   await sdk.isReady();
   const platform = sdk.platform;
-  const identity = await platform.identities.get('an identity ID goes here');
-  const nameRegistration = await platform.names.register('a name goes here', identity);
+  const identity = await platform.identities.get(process.env.ID);
+  const nameRegistration = await platform.names.register('j', identity);
   console.log({nameRegistration});
 };
 registerName();

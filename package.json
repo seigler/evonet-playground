@@ -4,7 +4,7 @@
   "description": "Monitor evonet name registrations & make your own",
   "main": "index.js",
   "scripts": {
-    "start": "node listNames.js",
+    "start": "node watchNames.js",
     "register": "node register.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "dash": "^1.1.0",
+    "dotenv": "^8.2.0",
     "node-notifier": "^6.0.0",
     "nodemon": "^2.0.2",
     "play-sound": "^1.1.3"

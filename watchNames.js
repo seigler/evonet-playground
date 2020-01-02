@@ -20,7 +20,9 @@ const sdk = new dash.SDK(sdkOpts);
       ]]
     });
     const usernames = documents.map(d => d.data.normalizedLabel);
-    if (prevUsernames != null) {
+    if (prevUsernames == null) {
+      console.log(`${usernames.length} names already registered.`);
+    } else {
       const newNames = usernames.filter(u => !prevUsernames.includes(u));
       if (newNames.length > 0) {
         createNotification('New users: ' + newNames.toString());
@@ -32,6 +34,7 @@ const sdk = new dash.SDK(sdkOpts);
 })();
 
 function createNotification(message) {
+  console.log(message);
   player.play('notify.mp3', function(err){ if (err) throw err; });
   notifier.notify({
     title: 'EvoNet monitor',
