@@ -1,6 +1,8 @@
+require('dotenv').config();
 const dash = require('dash');
 const player = require('play-sound')(opts = {});
 const notifier = require('node-notifier');
+const request = require('request');
 
 const sdkOpts = {
   network: 'testnet'
@@ -25,7 +27,7 @@ const sdk = new dash.SDK(sdkOpts);
     } else {
       const newNames = usernames.filter(u => !prevUsernames.includes(u));
       if (newNames.length > 0) {
-        createNotification('New users: ' + newNames.toString());
+        createNotification(newNames);
       }
     }
     prevUsernames = usernames;
@@ -33,11 +35,28 @@ const sdk = new dash.SDK(sdkOpts);
   }
 })();
 
-function createNotification(message) {
+function createNotification(newNames) {
+  const message = (newNames.length > 1 ?
+    'New users:\n* ' + newNames.join('\n* ') :
+    'New user: ' + newNames[0]
+  );
   console.log(message);
   player.play('notify.mp3', function(err){ if (err) throw err; });
-  notifier.notify({
-    title: 'EvoNet monitor',
-    message
-  });
+  if (process.env.SLACKWEBHOOK) {
+    request.post(
+      process.env.SLACKWEBHOOK,
+      { json: { "text": message } },
+      function (error, response, body) {
+        if (error) {
+          console.error(error);
+          console.dir(response);
+        }
+      }
+    );
+  } else {
+    notifier.notify({
+      title: 'EvoNet monitor',
+      message
+    });
+  }
 }
