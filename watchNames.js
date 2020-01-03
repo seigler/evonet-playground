@@ -14,14 +14,23 @@ const sdk = new dash.SDK(sdkOpts);
   await sdk.isReady();
 
   let prevUsernames = null;
-
   while(true) {
-    const documents = await platform.documents.get('dpns.domain', {
-      where: [[
-        'normalizedParentDomainName', '==', 'dash'
-      ]]
-    });
-    const usernames = documents.map(d => d.data.normalizedLabel);
+    let documents;
+    let usernames = [];
+    let startAt = 0;
+    do {
+      documents = await platform.documents.get('dpns.domain', {
+        where: [[
+          'normalizedParentDomainName', '==', 'dash'
+        ]],
+        startAt
+      });
+      usernames = usernames.concat(
+        documents.map(d => d.data.normalizedLabel)
+      );
+      startAt += 100;
+    } while (documents.length == 100);
+
     if (prevUsernames == null) {
       console.log(`${usernames.length} names already registered.`);
     } else {
@@ -31,7 +40,7 @@ const sdk = new dash.SDK(sdkOpts);
       }
     }
     prevUsernames = usernames;
-    await new Promise(r => setTimeout(r, 30 * 1000));
+    await new Promise(r => setTimeout(r, 60 * 1000));
   }
 })();
 
