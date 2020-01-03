@@ -1,7 +1,7 @@
 # EvoNet name registration playground
 
 `npm run start` to get a sound and a notification when a new name is registered.
-`npm run register` to register a name (you need to edit register.js first)
+`npm run register` to register a name (you need to edit `.env` first)
 
 ---
 

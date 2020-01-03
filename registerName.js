@@ -1,5 +1,5 @@
 const DashJS = require('dash');
-require('dotenv').config();
+require('dotenv-safe').config();
 
 const sdkOpts = {
   network: 'testnet',

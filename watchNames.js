@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv-safe').config();
 const dash = require('dash');
 const player = require('play-sound')(opts = {});
 const notifier = require('node-notifier');

@@ -1,5 +1,7 @@
 const DashJS = require('dash');
-require('dotenv').config();
+require('dotenv-safe').config({
+  allowEmptyValues: true
+});
 
 const sdkOpts = {
   network: 'testnet',
