@@ -14,6 +14,7 @@ const sdk = new dash.SDK(sdkOpts);
   await sdk.isReady();
 
   let prevUsernames = null;
+  let recentPages = 1;
   while(true) {
     let documents;
     let usernames = [];
@@ -40,7 +41,8 @@ const sdk = new dash.SDK(sdkOpts);
       }
     }
     prevUsernames = usernames;
-    await new Promise(r => setTimeout(r, 60 * 1000));
+    recentPages = Math.ceil(usernames.length / 100);
+    await new Promise(r => setTimeout(r, 15 * recentPages * 1000));
   }
 })();
 
