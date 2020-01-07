@@ -40,6 +40,7 @@ const getDocuments = async function () {
     );
     startAt += 100;
   } while (documents.length == 100);
+  sdk.disconnect();
   profiles.forEach(u => console.log(u.name));
 };
 getDocuments();

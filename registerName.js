@@ -17,5 +17,6 @@ const registerName = async function () {
   const identity = await platform.identities.get(process.env.ID);
   const nameRegistration = await platform.names.register(name, identity);
   console.log({nameRegistration});
+  sdk.disconnect();
 };
 registerName();

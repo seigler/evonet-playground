@@ -10,6 +10,7 @@ async function connect() {
   await sdk.isReady();
   const mnemonic = sdk.wallet.exportWallet();
   const address = sdk.account.getUnusedAddress();
+  sdk.disconnect();
   console.log('Mnemonic:', mnemonic);
   console.log('Unused address:', address.address);
 }

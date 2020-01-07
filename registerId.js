@@ -16,5 +16,6 @@ const createIdentity = async function () {
     .then((identity) => {
       console.log({identity});
     });
+  sdk.disconnect();
 };
 createIdentity();
