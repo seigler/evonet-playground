@@ -13,12 +13,11 @@ const sdk = new dash.SDK(sdkOpts);
   let platform = sdk.platform;
   await sdk.isReady();
 
-  let prevUsernames = null;
-  let recentPages = 1;
+  let lastCount = 0;
   while(true) {
     let documents;
     let usernames = [];
-    let startAt = 0;
+    let startAt = lastCount;
     do {
       let retry = true;
       do {
@@ -36,18 +35,16 @@ const sdk = new dash.SDK(sdkOpts);
       startAt += 100;
     } while (documents.length == 100);
 
-    if (prevUsernames == null) {
+    if (lastCount === 0) {
       usernames.forEach(u => console.log(u));
       console.log(`Total ${usernames.length} names and domains (mostly names) registered.`);
     } else {
-      const newNames = usernames.filter(u => !prevUsernames.includes(u));
-      if (newNames.length > 0) {
-        createNotification(newNames);
+      if (usernames.length > 0) {
+        createNotification(usernames);
       }
     }
-    prevUsernames = usernames;
-    recentPages = Math.ceil(usernames.length / 100);
-    await new Promise(r => setTimeout(r, 15 * recentPages * 1000));
+    lastCount += usernames.length;
+    await new Promise(r => setTimeout(r, 60 * 1000));
   }
 })();
 
