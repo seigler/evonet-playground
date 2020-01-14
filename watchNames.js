@@ -30,14 +30,26 @@ const sdk = new dash.SDK(sdkOpts);
         }
       } while (retry);
       usernames = usernames.concat(
-        documents.map(d => d.data.normalizedLabel)
+        documents.map(d => ({
+          label: d.data.normalizedLabel,
+          domain: d.data.normalizedParentDomainName,
+          id: d.userId
+        }))
       );
       startAt += 100;
     } while (documents.length == 100);
 
     if (lastCount === 0) {
-      usernames.forEach(u => console.log(u));
-      console.log(`Total ${usernames.length} names and domains (mostly names) registered.`);
+      usernames.forEach(u => console.log(`${u.label}${
+        u.domain === '' ? '' : '.' + u.domain
+      }\t${u.id}`));
+      const uniqueIds = usernames.map(x => x.id).filter(
+        (val, i, arr) => (arr.indexOf(val) === i)
+      ).length;
+      const domains = usernames.filter(
+        u => u.domain === ''
+      ).length;
+      console.log(`Total ${usernames.length - domains} names and ${domains} domain${domains > 1 ? 's' : ''} registered, representing ${uniqueIds} unique IDs.`);
     } else {
       if (usernames.length > 0) {
         createNotification(usernames);
@@ -49,9 +61,10 @@ const sdk = new dash.SDK(sdkOpts);
 })();
 
 function createNotification(newNames) {
-  const message = (newNames.length > 1 ?
-    'New users:\n* ' + newNames.join('\n* ') :
-    'New user: ' + newNames[0]
+  const names = newNames.map(n => `${n.label}.${n.domain} - ${n.id}`);
+  const message = (names.length > 1 ?
+    'New users:\n* ' + names.join('\n* ') :
+    'New user: ' + names[0]
   );
   console.log(message);
   player.play('notify.mp3', function(err){ if (err) throw err; });
