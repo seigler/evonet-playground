@@ -46,15 +46,14 @@ const sdk = new dash.SDK(sdkOpts);
       const uniqueIds = usernames.map(x => x.id).filter(
         (val, i, arr) => (arr.indexOf(val) === i)
       ).length;
-      const uniqueIdPublicKeys = usernames.map(x => (
-        await platform.identities.get(x.id)
-      )).filter(
+      const idPublicKeys = await Promise.all(usernames.map(x => platform.identities.get(x.id)));
+      const uniqueIdPublicKeys = idPublicKeys.map(x => x.publicKeys[0].data).filter(
         (val, i, arr) => (arr.indexOf(val) === i)
       ).length;
       const domains = usernames.filter(
         u => u.domain === ''
       ).length;
-      console.log(`Total ${usernames.length - domains} names and ${domains} domain${domains > 1 ? 's' : ''} registered, representing ${uniqueIds} unique IDs.`);
+      console.log(`Total ${usernames.length - domains} names and ${domains} domain${domains > 1 ? 's' : ''} registered, representing ${uniqueIds} unique IDs from ${uniqueIdPublicKeys} mnemonics.`);
     } else {
       if (usernames.length > 0) {
         createNotification(usernames);
