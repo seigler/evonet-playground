@@ -13,7 +13,6 @@ const sdk = new dash.SDK(sdkOpts);
 
 (async function () {
   await sdk.isReady();
-  const identity = await sdk.platform.identities.get(id);
-  console.log(identity.publicKeys[0].data);
+  console.log(await sdk.identities.get(id));
   sdk.disconnect();
 })();

@@ -46,6 +46,11 @@ const sdk = new dash.SDK(sdkOpts);
       const uniqueIds = usernames.map(x => x.id).filter(
         (val, i, arr) => (arr.indexOf(val) === i)
       ).length;
+      const uniqueIdPublicKeys = usernames.map(x => (
+        await platform.identities.get(x.id)
+      )).filter(
+        (val, i, arr) => (arr.indexOf(val) === i)
+      ).length;
       const domains = usernames.filter(
         u => u.domain === ''
       ).length;
