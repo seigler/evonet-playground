@@ -10,6 +10,9 @@ const registerName = async function () {
   const sdkOpts = {
     network: 'testnet',
     mnemonic: process.env.MNEMONIC,
+    seeds: [{
+      service: 'evonet.thephez.com:3000'
+    }]
   };
   const sdk = new DashJS.SDK(sdkOpts);
   await sdk.isReady();
