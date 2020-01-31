@@ -9,10 +9,7 @@ const name = process.argv[2];
 const registerName = async function () {
   const sdkOpts = {
     network: 'testnet',
-    mnemonic: process.env.MNEMONIC,
-    seeds: [{
-      service: 'evonet.thephez.com:3000'
-    }]
+    mnemonic: process.env.MNEMONIC
   };
   const sdk = new DashJS.SDK(sdkOpts);
   await sdk.isReady();
