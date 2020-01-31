@@ -5,10 +5,10 @@ const notifier = require('node-notifier');
 const request = require('request');
 
 const sdkOpts = {
-  network: 'testnet',
-  seeds: [
-    { service: '34.209.44.204' }
-  ]
+  network: 'testnet'
+//  seeds: [
+//    { service: '34.209.44.204' }
+//  ]
 };
 const sdk = new dash.SDK(sdkOpts);
 
