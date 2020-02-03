@@ -49,21 +49,21 @@ const sdk = new dash.SDK(sdkOpts);
       const uniqueIds = usernames.map(x => x.id).filter(
         (val, i, arr) => (arr.indexOf(val) === i)
       );
-      // const idPublicKeys = await Promise.all(uniqueIds.map(
-      //   x => platform.identities.get(x)
-      // ));
-      // const uniqueIdPublicKeys = idPublicKeys.map(
-      //   x => x.publicKeys[0].data
-      // ).filter(
-      //   (val, i, arr) => (arr.indexOf(val) === i)
-      // );
+      const idPublicKeys = await Promise.all(uniqueIds.map(
+        x => platform.identities.get(x)
+      ));
+      const uniqueIdPublicKeys = idPublicKeys.map(
+        x => x.publicKeys[0].data
+      ).filter(
+        (val, i, arr) => (arr.indexOf(val) === i)
+      );
       const domains = usernames.filter(
         u => u.domain === ''
       ).length;
       console.log(`Total ${usernames.length - domains} names and ${domains} `+
         `domain${domains > 1 ? 's' : ''} registered, representing `+
         `${uniqueIds.length} unique IDs`+
-        // ` from ${uniqueIdPublicKeys.length} mnemonics`+
+        ` from ${uniqueIdPublicKeys.length} mnemonics`+
         `.`);
     } else {
       if (usernames.length > 0) {
