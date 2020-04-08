@@ -4,16 +4,16 @@ const sdkOpts = {
   network: 'testnet'
 };
 
-if (process.argv.length != 3) {
+if (process.argv.length !== 3) {
   throw new Error('Expected 1 argument: id');
 }
 const id = process.argv[2];
 
-const sdk = new dash.SDK(sdkOpts);
+const client = new dash.Client(sdkOpts);
 
 (async function () {
-  await sdk.isReady();
-  const identity = await sdk.platform.identities.get(id);
+  await client.isReady();
+  const identity = await client.platform.identities.get(id);
   console.log(identity);
-  sdk.disconnect();
+  client.disconnect();
 })();

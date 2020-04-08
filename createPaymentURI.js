@@ -6,28 +6,28 @@ require('dotenv-safe').config();
 const dash = require('dash');
 const { PrivateKey, Message } = require('@dashevo/dashcore-lib');
 
-if (process.argv.length != 3) {
+if (process.argv.length !== 3) {
   throw new Error('Expected 1 argument: name');
 }
 const name = process.argv[2];
 
 const sdkOpts = {
   mnemonic: process.env.MNEMONIC,
-  network: 'testnet',
+  network: 'testnet'
 };
 
 (async function () {
-  const sdk = new dash.SDK(sdkOpts);
-  await sdk.isReady();
+  const client = new dash.Client(sdkOpts);
+  await client.isReady();
 
-  const address = sdk.account.getUnusedAddress().address;
+  const address = client.account.getUnusedAddress().address;
 
-  //TODO: this will eventually stop working
-  const idHDKey = sdk.account.getIdentityHDKey(0, 'user');
+  // TODO: this will eventually stop working
+  const idHDKey = client.account.getIdentityHDKey(0, 'user');
   const privKey = PrivateKey.fromObject(idHDKey.privateKey);
   const signature = Message(address).sign(privKey);
 
-  console.log(`dash:${address}?dpn=${name},${signature}`)
+  console.log(`dash:${address}?dpn=${name},${signature}`);
 
-  sdk.disconnect();
+  client.disconnect();
 })();

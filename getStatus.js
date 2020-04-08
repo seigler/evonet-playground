@@ -3,19 +3,21 @@ require('dotenv-safe').config();
 
 const sdkOpts = {
   network: 'testnet',
-  mnemonic: process.env.MNEMONIC,
+  mnemonic: process.env.MNEMONIC
 };
-const sdk = new DashJS.SDK(sdkOpts);
+const client = new DashJS.Client(sdkOpts);
 
-async function connect() {
-  await sdk.isReady();
+async function connect () {
+  await client.isReady();
   console.log('ready');
-  const balance = sdk.account.getConfirmedBalance();
-  const unusedAddress = sdk.account.getUnusedAddress();
+  const unconfirmedBalance = client.account.getUnconfirmedBalance();
+  const confirmedBalance = client.account.getConfirmedBalance();
+  const unusedAddress = client.account.getUnusedAddress();
   console.log({
-    balance,
-    unusedAddress,
+    unconfirmedBalance,
+    confirmedBalance,
+    unusedAddress
   });
-  sdk.disconnect();
+  client.disconnect();
 }
 connect();

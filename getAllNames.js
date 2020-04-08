@@ -3,11 +3,11 @@ const dash = require('dash');
 const sdkOpts = {
   network: 'testnet'
 };
-const sdk = new dash.SDK(sdkOpts);
+const client = new dash.Client(sdkOpts);
 
 const getDocuments = async function () {
-  let platform = sdk.platform;
-  await sdk.isReady();
+  const platform = client.platform;
+  await client.isReady();
 
   let documents;
   let profiles = [];
@@ -15,20 +15,20 @@ const getDocuments = async function () {
   do {
     documents = await platform.documents.get('dpns.domain', {
       where: [
-        ['normalizedParentDomainName', '==', 'dash'],
+        ['normalizedParentDomainName', '==', 'dash']
       ],
-      startAt: startAt,
+      startAt: startAt
     });
     profiles = profiles.concat(
       documents.map(d => ({
         name: d.data.normalizedLabel,
         nameHash: d.data.nameHash,
-        identity: d.userId,
+        identity: d.userId
       }))
     );
     startAt += 100;
-  } while (documents.length == 100);
-  sdk.disconnect();
+  } while (documents.length === 100);
+  client.disconnect();
   profiles.forEach(u => console.dir(u));
 };
 getDocuments();

@@ -1,23 +1,20 @@
 require('dotenv-safe').config();
 const dash = require('dash');
-const player = require('play-sound')(opts = {});
+const player = require('play-sound')({});
 const notifier = require('node-notifier');
 const request = require('request');
 
 const sdkOpts = {
   network: 'testnet'
-//  seeds: [
-//    { service: '34.209.44.204' }
-//  ]
 };
-const sdk = new dash.SDK(sdkOpts);
+const client = new dash.Client(sdkOpts);
 
 (async function () {
-  let platform = sdk.platform;
-  await sdk.isReady();
+  const platform = client.platform;
+  await client.isReady();
 
   let lastCount = 0;
-  while(true) {
+  while (true) {
     let documents;
     let usernames = [];
     let startAt = lastCount;
@@ -29,7 +26,7 @@ const sdk = new dash.SDK(sdkOpts);
           retry = false;
         } catch (e) {
           console.error(e.metadata);
-          await new Promise(r => setTimeout(r, 2000));
+          await new Promise(resolve => setTimeout(resolve, 2000));
         }
       } while (retry);
       usernames = usernames.concat(
@@ -40,7 +37,7 @@ const sdk = new dash.SDK(sdkOpts);
         }))
       );
       startAt += 100;
-    } while (documents.length == 100);
+    } while (documents.length === 100);
 
     if (lastCount === 0) {
       usernames.forEach(u => console.log(`${u.label}${
@@ -60,33 +57,33 @@ const sdk = new dash.SDK(sdkOpts);
       const domains = usernames.filter(
         u => u.domain === ''
       ).length;
-      console.log(`Total ${usernames.length - domains} names and ${domains} `+
-        `domain${domains > 1 ? 's' : ''} registered, representing `+
-        `${uniqueIds.length} unique IDs`+
-        ` from ${uniqueIdPublicKeys.length} mnemonics`+
-        `.`);
+      console.log(`Total ${usernames.length - domains} names and ${domains} ` +
+        `domain${domains > 1 ? 's' : ''} registered, representing ` +
+        `${uniqueIds.length} unique IDs` +
+        ` from ${uniqueIdPublicKeys.length} mnemonics` +
+        '.');
     } else {
       if (usernames.length > 0) {
         createNotification(usernames);
       }
     }
     lastCount += usernames.length;
-    await new Promise(r => setTimeout(r, 60 * 1000));
+    await new Promise(resolve => setTimeout(resolve, 60 * 1000));
   }
 })();
 
-function createNotification(newNames) {
+function createNotification (newNames) {
   const names = newNames.map(n => `${n.label}.${n.domain} - ${n.id}`);
-  const message = (names.length > 1 ?
-    'New users:\n* ' + names.join('\n* ') :
-    'New user: ' + names[0]
+  const message = (names.length > 1
+    ? 'New users:\n* ' + names.join('\n* ')
+    : 'New user: ' + names[0]
   );
   console.log(message);
-  player.play('notify.mp3', function(err){ if (err) throw err; });
+  player.play('notify.mp3', err => { if (err) throw err; });
   if (process.env.SLACKWEBHOOK) {
     request.post(
       process.env.SLACKWEBHOOK,
-      { json: { "text": message } },
+      { json: { text: message } },
       function (error, response, body) {
         if (error) {
           console.error(error);

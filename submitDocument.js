@@ -4,26 +4,26 @@ require('dotenv-safe').config();
 const sdkOpts = {
   seeds: ['54.148.62.72'],
   network: 'testnet',
-  mnemonic: process.env.MNEMONIC,
+  mnemonic: process.env.MNEMONIC
 };
-const sdk = new DashJS.SDK(sdkOpts);
+const client = new DashJS.Client(sdkOpts);
 
 const submitPreorderDocument = async function () {
-  const platform = sdk.platform;
-  await sdk.isReady();
+  const platform = client.platform;
+  await client.isReady();
 
   try {
     const identity = await platform.identities.get('an identity ID goes here');
 
-    docProperties = {
+    const docProperties = {
       saltedDomainHash: 'a previously calculated hash'
-    }
+    };
 
     // Create the preorder document
     const preorderDocument = await platform.documents.create(
       'dpns.preorder',
       identity,
-      docProperties,
+      docProperties
     );
 
     // Sign and submit the document
@@ -36,11 +36,11 @@ const submitPreorderDocument = async function () {
         where: [['saltedDomainHash', '==', docProperties.saltedDomainHash]]
       }
     );
-    console.dir({retrievedPreorder}, {depth:10});
+    console.dir({ retrievedPreorder }, { depth: 10 });
   } catch (e) {
     console.error('Something went wrong:', e);
   } finally {
-    sdk.disconnect();
+    client.disconnect();
   }
 };
 
