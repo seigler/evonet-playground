@@ -33,7 +33,7 @@ const client = new dash.Client(sdkOpts);
         documents.map(d => ({
           label: d.data.normalizedLabel,
           domain: d.data.normalizedParentDomainName,
-          id: d.userId
+          id: d.ownerId
         }))
       );
       startAt += 100;
