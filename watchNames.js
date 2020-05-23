@@ -5,7 +5,18 @@ const notifier = require('node-notifier');
 const request = require('request');
 
 const sdkOpts = {
-  network: 'testnet'
+  seeds: [
+    { service: 'seed-1.evonet.networks.dash.org' },
+    { service: 'seed-2.evonet.networks.dash.org' },
+    { service: 'seed-3.evonet.networks.dash.org' },
+    { service: 'seed-4.evonet.networks.dash.org' },
+    { service: 'seed-5.evonet.networks.dash.org' },
+  ],
+  apps: {
+    dpns: {
+      contractId: '7PBvxeGpj7SsWfvDSa31uqEMt58LAiJww7zNcVRP1uEM'
+    }
+  }
 };
 const client = new dash.Client(sdkOpts);
 
