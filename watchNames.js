@@ -11,18 +11,17 @@ const sdkOpts = {
     { service: 'seed-3.evonet.networks.dash.org' },
     { service: 'seed-4.evonet.networks.dash.org' },
     { service: 'seed-5.evonet.networks.dash.org' },
-  ],
-  apps: {
-    dpns: {
-      contractId: '7PBvxeGpj7SsWfvDSa31uqEMt58LAiJww7zNcVRP1uEM'
-    }
-  }
+  ]
+  // apps: {
+  //   dpns: {
+  //     contractId: '7PBvxeGpj7SsWfvDSa31uqEMt58LAiJww7zNcVRP1uEM'
+  //   }
+  // }
 };
 const client = new dash.Client(sdkOpts);
 
 (async function () {
   const platform = client.platform;
-  await client.isReady();
 
   let lastCount = 0;
   while (true) {

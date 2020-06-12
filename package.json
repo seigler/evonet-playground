@@ -11,8 +11,8 @@
   "author": "Joshua Seigler",
   "license": "MIT",
   "dependencies": {
-    "@dashevo/dashcore-lib": "^0.18.1",
-    "dash": "^3.0.2",
+    "@dashevo/dashcore-lib": "^0.18.4",
+    "dash": "^3.13.0",
     "dotenv-safe": "^8.2.0",
     "node-notifier": "^7.0.1",
     "nodemon": "^2.0.4",
